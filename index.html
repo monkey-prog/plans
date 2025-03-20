@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Dashboard</title>
+  <style>
+    /* General body styles */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #1a1a2e, #16213e);
+      color: white;
+      text-align: center;
+    }
+
+    /* Header styles */
+    header {
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 25px;
+      position: relative;
+      border-bottom: 3px solid #4361ee;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    /* Main container */
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px;
+    }
+
+    /* Corner buttons */
+    .corner-button {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 24px;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .corner-button:hover {
+      transform: scale(1.1);
+    }
+
+    .top-left {
+      top: 20px;
+      left: 20px;
+      background: linear-gradient(135deg, #ff0099, #493240);
+    }
+
+    .top-right {
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #4361ee, #3a0ca3);
+    }
+
+    .bottom-left {
+      bottom: 20px;
+      left: 20px;
+      background: linear-gradient(135deg, #7209b7, #3f37c9);
+    }
+
+    .bottom-right {
+      bottom: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #f72585, #b5179e);
+    }
+
+    /* Dashboard section */
+    .dashboard-section {
+      margin-top: 40px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: #4cc9f0;
+      text-shadow: 0 0 10px rgba(76, 201, 240, 0.5);
+    }
+
+    /* Plan cards container */
+    .plan-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    /* Plan card */
+    .plan-card {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    .plan-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, #f72585, #4361ee);
+    }
+
+    .plan-message-count {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #f72585;
+      margin: 10px 0;
+    }
+
+    .plan-title {
+      font-size: 1.5rem;
+      margin: 15px 0;
+      color: #4cc9f0;
+    }
+
+    .plan-description {
+      margin-bottom: 20px;
+      color: #d8d8d8;
+      line-height: 1.6;
+    }
+
+    .availability {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 15px;
+    }
+
+    .available {
+      color: #4ade80;
+    }
+
+    .unavailable {
+      color: #f87171;
+    }
+
+    /* Action button */
+    .action-button {
+      display: inline-block;
+      background: linear-gradient(45deg, #4361ee, #3a0ca3);
+      color: white;
+      padding: 12px 30px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+    }
+
+    .action-button:hover {
+      background: linear-gradient(45deg, #3a0ca3, #4361ee);
+      box-shadow: 0 7px 20px rgba(67, 97, 238, 0.5);
+      transform: translateY(-3px);
+    }
+
+    /* Staff section */
+    .staff-info {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 15px;
+      padding: 30px;
+      margin-top: 50px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .staff-description {
+      line-height: 1.7;
+      max-width: 800px;
+      margin: 0 auto 30px auto;
+      color: #d8d8d8;
+    }
+
+    /* Footer styles */
+    footer {
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #d8d8d8;
+      padding: 20px;
+      margin-top: 50px;
+      border-top: 3px solid #4361ee;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Corner Buttons -->
+  <a href="#" class="corner-button top-left">🏠</a>
+  <a href="#" class="corner-button top-right">👤</a>
+  <a href="#" class="corner-button bottom-left">🔔</a>
+  <a href="#" class="corner-button bottom-right">💬</a>
+
+  <!-- Header Section -->
+  <header>
+    <h1>Staff Dashboard</h1>
+  </header>
+
+  <!-- Main Content Section -->
+  <div class="main-container">
+    
+    <!-- Active Chatter/Staff Plans Section -->
+    <section class="dashboard-section">
+      <h2 class="section-title">Active Chatter & Staff Plans</h2>
+      
+      <div class="plan-cards">
+        <!-- 10K Messages Plan -->
+        <div class="plan-card">
+          <div class="plan-message-count">10K</div>
+          <h3 class="plan-title">Nitro Boost Plan</h3>
+          <p class="plan-description">Achieve 10,000 messages and receive a Nitro Boost as a reward for your dedication.</p>
+          <div class="availability unavailable">Slots: 1/1</div>
+          <button class="action-button">View Details</button>
+        </div>
+        
+        <!-- 8K Messages Plan -->
+        <div class="plan-card">
+          <div class="plan-message-count">8K</div>
+          <h3 class="plan-title">Customization Pack</h3>
+          <p class="plan-description">Choose between 2 avatar decors, 1 avatar decor + 1 profile theme, or 2 profile themes (of my choice).</p>
+          <div class="availability available">Slots: 0/1</div>
+          <button class="action-button">Apply Now</button>
+        </div>
+        
+        <!-- 7K Messages Plan -->
+        <div class="plan-card">
+          <div class="plan-message-count">7K</div>
+          <h3 class="plan-title">Robux Reward</h3>
+          <p class="plan-description">Earn 572 Robux (400 Robux after tax) by reaching 7,000 messages.</p>
+          <div class="availability available">Slots: 0/1</div>
+          <button class="action-button">Apply Now</button>
+        </div>
+        
+        <!-- 5K Messages Plan -->
+        <div class="plan-card">
+          <div class="plan-message-count">5K</div>
+          <h3 class="plan-title">Direct Robux</h3>
+          <p class="plan-description">Get 400 Robux with no tax deduction when you reach 5,000 messages.</p>
+          <div class="availability unavailable">Slots: 1/1</div>
+          <button class="action-button">View Details</button>
+        </div>
+        
+        <!-- 4K Messages Plan -->
+        <div class="plan-card">
+          <div class="plan-message-count">4K</div>
+          <h3 class="plan-title">Single Item Reward</h3>
+          <p class="plan-description">Choose between an avatar decor or profile theme (of my choice).</p>
+          <div class="availability available">Slots: 0/1</div>
+          <button class="action-button">Apply Now</button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Staff Information Section -->
+    <section class="staff-info dashboard-section">
+      <h2 class="section-title">Staff Plan Information</h2>
+      <p class="staff-description">If you choose a staff plan, message requirements will be reduced. In exchange, you'll be expected to moderate and maintain semi-active status with messages. Being a staff member means helping maintain our community while still earning rewards!</p>
+      <button class="action-button">Become a Staff Member</button>
+    </section>
+    
+  </div>
+
+  <!-- Footer Section -->
+  <footer>
+    <p>Updated March 2025 | Contact for more information</p>
+  </footer>
+
+  <script>
+    // Simple animation for cards
+    document.addEventListener('DOMContentLoaded', function() {
+      const cards = document.querySelectorAll('.plan-card');
+      cards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+      });
+      
+      // Add button click effects
+      const buttons = document.querySelectorAll('.action-button');
+      buttons.forEach(button => {
+        button.addEventListener('click', function() {
+          this.style.transform = 'scale(0.95)';
+          setTimeout(() => {
+            this.style.transform = '';
+          }, 200);
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
