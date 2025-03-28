@@ -3,49 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nitro Code Generator</title>
+    <title>Discord Nitro Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        textarea {
+            width: 80%;
+            height: 200px;
+            margin-top: 10px;
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Nitro Code Generator</h2>
-    <label for="amount">Enter Amount:</label>
-    <input type="number" id="amount" min="1" value="500">
+
+    <h2>Discord Nitro Generator</h2>
+    <p>Enter the amount of links to generate:</p>
+    <input type="number" id="amount" min="1" value="10">
     <button onclick="generateCodes()">Generate</button>
     <button onclick="downloadCodes()">Download</button>
-    <textarea id="output" rows="10" cols="50" readonly></textarea>
+
+    <textarea id="output" readonly></textarea>
 
     <script>
-        let codes = [];
+        function generateRandomCode() {
+            const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            let code = "";
+            for (let i = 0; i < 16; i++) {
+                code += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return `https://discord.gift/${code}`;
+        }
 
         function generateCodes() {
-            const amount = parseInt(document.getElementById('amount').value);
-            if (isNaN(amount) || amount <= 0) {
+            const amount = parseInt(document.getElementById("amount").value);
+            if (amount <= 0 || isNaN(amount)) {
                 alert("Please enter a valid number.");
                 return;
             }
-
-            codes = [];
+            
+            let codes = "";
             for (let i = 0; i < amount; i++) {
-                let code = "https://discord.gift/" + Math.random().toString(36).substring(2, 18);
-                codes.push(code);
+                codes += generateRandomCode() + "\n";
             }
-
-            document.getElementById('output').value = codes.join("\n");
+            document.getElementById("output").value = codes;
         }
 
         function downloadCodes() {
-            if (codes.length === 0) {
-                alert("No codes generated!");
+            const content = document.getElementById("output").value;
+            if (!content.trim()) {
+                alert("No codes to download!");
                 return;
             }
 
-            const blob = new Blob([codes.join("\n")], { type: "text/plain" });
+            const blob = new Blob([content], { type: "text/plain" });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = "nitro_codes.txt";
+            link.download = "Nitro_Codes.txt";
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
     </script>
+
 </body>
 </html>
