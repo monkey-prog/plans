@@ -1,406 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plans Dashboard</title>
-  <style>
-    /* General body styles */
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to right, #1a1a2e, #16213e);
-      color: white;
-      text-align: center;
-    }
-
-    /* Header styles */
-    header {
-      background-color: rgba(0, 0, 0, 0.7);
-      color: white;
-      padding: 25px;
-      position: relative;
-      border-bottom: 3px solid #4361ee;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 2.5rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    /* Main container */
-    .main-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 30px;
-    }
-
-    /* Corner buttons */
-    .corner-button {
-      position: fixed;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      font-size: 24px;
-      text-decoration: none;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      transition: all 0.3s ease;
-      z-index: 1000;
-    }
-
-    .corner-button:hover {
-      transform: scale(1.1);
-    }
-
-    .top-left {
-      top: 20px;
-      left: 20px;
-      background: linear-gradient(135deg, #ff0099, #493240);
-    }
-
-    /* Dashboard section */
-    .dashboard-section {
-      margin-top: 40px;
-      animation: fadeIn 1s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .section-title {
-      font-size: 2rem;
-      margin-bottom: 30px;
-      color: #4cc9f0;
-      text-shadow: 0 0 10px rgba(76, 201, 240, 0.5);
-    }
-
-    /* Plan cards container */
-    .plan-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-      margin-top: 40px;
-    }
-
-    /* Plan card */
-    .plan-card {
-      background: rgba(0, 0, 0, 0.5);
-      border-radius: 15px;
-      padding: 25px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .plan-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-    }
-
-    .plan-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 5px;
-      background: linear-gradient(to right, #f72585, #4361ee);
-    }
-
-    .plan-message-count {
-      font-size: 2.5rem;
-      font-weight: bold;
-      color: #f72585;
-      margin: 10px 0;
-    }
-
-    .plan-title {
-      font-size: 1.5rem;
-      margin: 15px 0;
-      color: #4cc9f0;
-    }
-
-    .plan-description {
-      margin-bottom: 20px;
-      color: #d8d8d8;
-      line-height: 1.6;
-    }
-
-    .availability {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 8px 15px;
-      border-radius: 20px;
-      font-weight: bold;
-      display: inline-block;
-      margin-top: 15px;
-    }
-
-    .available {
-      color: #4ade80;
-    }
-
-    .unavailable {
-      color: #f87171;
-    }
-
-    /* Progress bar styles */
-    .progress-container {
-      width: 100%;
-      background-color: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      margin: 15px 0;
-      height: 20px;
-      overflow: hidden;
-      display: none;
-    }
-
-    .progress-bar {
-      height: 100%;
-      border-radius: 10px;
-      background: linear-gradient(45deg, #4361ee, #7209b7);
-      width: 0%;
-      transition: width 1.5s ease-in-out;
-    }
-
-    .progress-text {
-      margin-top: 8px;
-      font-size: 0.9rem;
-      color: #d8d8d8;
-      display: none;
-    }
-
-    .payment-status {
-      margin-top: 10px;
-      font-size: 0.9rem;
-      font-style: italic;
-      display: none;
-    }
-
-    .paid {
-      color: #4ade80;
-    }
-
-    .unpaid {
-      color: #f87171;
-    }
-
-    /* Action button */
-    .action-button {
-      display: inline-block;
-      background: linear-gradient(45deg, #4361ee, #3a0ca3);
-      color: white;
-      padding: 12px 30px;
-      border-radius: 30px;
-      text-decoration: none;
-      font-weight: bold;
-      margin-top: 20px;
-      transition: all 0.3s ease;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
-    }
-
-    .action-button:hover {
-      background: linear-gradient(45deg, #3a0ca3, #4361ee);
-      box-shadow: 0 7px 20px rgba(67, 97, 238, 0.5);
-      transform: translateY(-3px);
-    }
-
-    /* Staff section */
-    .staff-info {
-      background: rgba(0, 0, 0, 0.5);
-      border-radius: 15px;
-      padding: 30px;
-      margin-top: 50px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    }
-
-    .staff-description {
-      line-height: 1.7;
-      max-width: 800px;
-      margin: 0 auto 30px auto;
-      color: #d8d8d8;
-    }
-
-    /* Highlight text */
-    .highlight {
-      color: #4cc9f0;
-      font-weight: bold;
-    }
-
-    /* Footer styles */
-    footer {
-      background-color: rgba(0, 0, 0, 0.7);
-      color: #d8d8d8;
-      padding: 20px;
-      margin-top: 50px;
-      border-top: 3px solid #4361ee;
-    }
-  </style>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nitro Code Generator</title>
 </head>
 <body>
+    <h2>Nitro Code Generator</h2>
+    <label for="amount">Enter Amount:</label>
+    <input type="number" id="amount" min="1" value="500">
+    <button onclick="generateCodes()">Generate</button>
+    <button onclick="downloadCodes()">Download</button>
+    <textarea id="output" rows="10" cols="50" readonly></textarea>
 
-  <!-- Corner Button - Home only -->
-  <a href="#top" class="corner-button top-left">🏠</a>
+    <script>
+        let codes = [];
 
-  <!-- Header Section -->
-  <header id="top">
-    <h1>Staff Dashboard</h1>
-  </header>
+        function generateCodes() {
+            const amount = parseInt(document.getElementById('amount').value);
+            if (isNaN(amount) || amount <= 0) {
+                alert("Please enter a valid number.");
+                return;
+            }
 
-  <!-- Main Content Section -->
-  <div class="main-container">
-    
-    <!-- Active Chatter/Staff Plans Section -->
-    <section class="dashboard-section">
-      <h2 class="section-title">Active Chatter & Staff Plans</h2>
-      
-      <div class="plan-cards">
-        <!-- 10K Messages Plan -->
-        <div class="plan-card" id="plan-10k">
-          <div class="plan-message-count">10K</div>
-          <h3 class="plan-title">Nitro Boost Plan</h3>
-          <p class="plan-description">Achieve 10,000 messages and receive a Nitro Boost as a reward for your dedication.</p>
-          
-          <div class="progress-container">
-            <div class="progress-bar" data-progress="28.82"></div>
-          </div>
-          <div class="progress-text">Progress: 2,882 / 10,000 messages (28.82%)</div>
-          <div class="payment-status paid">Status: Paid upfront</div>
-          
-          <div class="availability unavailable">Slots: 1/1</div>
-          <button class="action-button" data-type="details">View Details</button>
-        </div>
-        
-        <!-- 8K Messages Plan -->
-        <div class="plan-card">
-          <div class="plan-message-count">8K</div>
-          <h3 class="plan-title">Customization Pack</h3>
-          <p class="plan-description">Choose between 2 avatar decors, 1 avatar decor + 1 profile theme, or 2 profile themes (of my choice).</p>
-          <div class="availability available">Slots: 0/1</div>
-          <a href="https://discord.gg/VgAScsgAwr" class="action-button">Apply Now</a>
-        </div>
-        
-        <!-- 7K Messages Plan -->
-        <div class="plan-card">
-          <div class="plan-message-count">7K</div>
-          <h3 class="plan-title">Robux Reward</h3>
-          <p class="plan-description">Earn 572 Robux (400 Robux after tax) by reaching 7,000 messages.</p>
-          <div class="availability available">Slots: 0/1</div>
-          <a href="https://discord.gg/VgAScsgAwr" class="action-button">Apply Now</a>
-        </div>
-        
-        <!-- 5K Messages Plan -->
-        <div class="plan-card" id="plan-5k">
-          <div class="plan-message-count">5K</div>
-          <h3 class="plan-title">Direct Robux</h3>
-          <p class="plan-description">Get 400 Robux with no tax deduction when you reach 5,000 messages.</p>
-          
-          <div class="progress-container">
-            <div class="progress-bar" data-progress="95.68"></div>
-          </div>
-          <div class="progress-text">Progress: 4,784 / 5,000 messages (95.68%)</div>
-          <div class="payment-status unpaid">Status: Not paid yet</div>
-          
-          <div class="availability unavailable">Slots: 1/1</div>
-          <button class="action-button" data-type="details">View Details</button>
-        </div>
-        
-        <!-- 4K Messages Plan -->
-        <div class="plan-card">
-          <div class="plan-message-count">4K</div>
-          <h3 class="plan-title">Single Item Reward</h3>
-          <p class="plan-description">Choose between an avatar decor or profile theme (of my choice).</p>
-          <div class="availability available">Slots: 0/1</div>
-          <a href="https://discord.gg/VgAScsgAwr" class="action-button">Apply Now</a>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Staff Information Section -->
-    <section class="staff-info dashboard-section">
-      <h2 class="section-title">Staff Plan Information</h2>
-      <p class="staff-description">
-        Hire me as your staff member and get the same rewards with <span class="highlight">1,000 fewer messages</span> required! The prices remain <span class="highlight">exactly the same</span> for all plans.
-      </p>
-      <p class="staff-description">
-        As your staff, I will actively moderate every time I'm in chat. This is not about you becoming staff - it's about <span class="highlight">me working for you</span>!
-      </p>
-      <a href="https://discord.gg/VgAScsgAwr" class="action-button">Hire Me As Staff</a>
-    </section>
-    
-  </div>
+            codes = [];
+            for (let i = 0; i < amount; i++) {
+                let code = "https://discord.gift/" + Math.random().toString(36).substring(2, 18);
+                codes.push(code);
+            }
 
-  <!-- Footer Section -->
-  <footer>
-    <p>Updated March 2025 | Contact for more information</p>
-  </footer>
+            document.getElementById('output').value = codes.join("\n");
+        }
 
-  <script>
-    // Display progress on load
-    document.addEventListener('DOMContentLoaded', function() {
-      // Simple animation for cards
-      const cards = document.querySelectorAll('.plan-card');
-      cards.forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.1}s`;
-      });
-      
-      // Set up detail buttons
-      const detailButtons = document.querySelectorAll('[data-type="details"]');
-      detailButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const card = this.closest('.plan-card');
-          const progressContainer = card.querySelector('.progress-container');
-          const progressText = card.querySelector('.progress-text');
-          const paymentStatus = card.querySelector('.payment-status');
-          
-          // Toggle visibility
-          if (progressContainer.style.display === 'block') {
-            progressContainer.style.display = 'none';
-            progressText.style.display = 'none';
-            paymentStatus.style.display = 'none';
-            this.textContent = 'View Details';
-          } else {
-            progressContainer.style.display = 'block';
-            progressText.style.display = 'block';
-            paymentStatus.style.display = 'block';
-            this.textContent = 'Hide Details';
-            
-            // Animate progress bar
-            setTimeout(() => {
-              const progressBar = card.querySelector('.progress-bar');
-              const progressValue = progressBar.getAttribute('data-progress');
-              progressBar.style.width = progressValue + '%';
-            }, 100);
-          }
-        });
-      });
-      
-      // Add button click effects
-      const buttons = document.querySelectorAll('.action-button');
-      buttons.forEach(button => {
-        button.addEventListener('click', function() {
-          if (!this.hasAttribute('href')) {
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-              this.style.transform = '';
-            }, 200);
-          }
-        });
-      });
-    });
-  </script>
+        function downloadCodes() {
+            if (codes.length === 0) {
+                alert("No codes generated!");
+                return;
+            }
 
+            const blob = new Blob([codes.join("\n")], { type: "text/plain" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "nitro_codes.txt";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
 </body>
 </html>
